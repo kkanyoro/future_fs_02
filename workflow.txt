@@ -1,0 +1,86 @@
+CLIENT LEAD MANAGEMENT SYSTEM (MINI CRM) - STEP-BY-STEP WORKFLOW
+
+## PHASE 1: ENVIRONMENT & DATABASE SETUP
+
+1.1 Project Structure:
+- Create a main folder "Mini-CRM".
+- Inside, create "backend" and "frontend" folders.
+- Inside "backend", run: npm init -y
+- Install: npm install express mysql2 dotenv cors jsonwebtoken bcryptjs
+
+1.2 Database (MySQL):
+- Create database: mini_crm_db
+- Create table: admins (id, username, email, password_hash, created_at)
+- Create table: leads (id, name, email, phone, source, status, created_at)
+- Create table: notes (id, lead_id, admin_id, content, created_at)
+- Set FK: notes.lead_id -> leads.id
+- Set FK: notes.admin_id -> admins.id
+
+1.3 Environment Configuration (.env):
+- Create .env file in /backend.
+- Add: DB_HOST, DB_USER, DB_PASS, DB_NAME, JWT_SECRET, PORT=5000.
+
+## PHASE 2: BACKEND API DEVELOPMENT (NODE.JS + EXPRESS)
+
+2.1 Database Connection (config/db.js):
+- Set up mysql2 connection pool.
+- Export the pool to use in other files.
+
+2.2 Lead Capture API (Public):
+- Route: POST /api/public/leads
+- Task: Takes name, email, phone from website form and inserts into 'leads' table.
+- Set default status to 'new'.
+
+2.3 Admin Auth API (Private):
+- Route: POST /api/auth/login
+- Task: Compare email/password (bcrypt). If match, sign a JWT token.
+- Middleware (middleware/auth.js): Verify JWT for all protected admin routes.
+
+2.4 Lead Management API (Private):
+- Route: GET /api/admin/leads (Fetch all leads, order by newest first).
+- Route: PATCH /api/admin/leads/:id (Update status: 'new', 'contacted', 'converted').
+
+2.5 Notes API (Private):
+- Route: POST /api/admin/leads/:id/notes (Insert new note for a specific lead).
+- Route: GET /api/admin/leads/:id/notes (Fetch note history for a specific lead).
+
+## PHASE 3: FRONTEND DEVELOPMENT (REACT.JS)
+
+3.1 React Setup:
+- In /frontend, run: npx create-react-app .
+- Install: npm install axios react-router-dom
+
+3.2 API Service (src/services/api.js):
+- Create axios instance with base URL (http://localhost:5000).
+- Interceptor: Automatically add JWT token from localStorage to headers.
+
+3.3 Login Page (src/pages/Login.js):
+- Simple form for admin credentials.
+- Store JWT in localStorage on successful login.
+- Redirect to /dashboard.
+
+3.4 Dashboard (src/pages/Dashboard.js):
+- Use useEffect to call GET /api/admin/leads.
+- Display leads in a clean Table.
+- Add "Update Status" dropdown for each lead.
+
+3.5 Lead Details & Notes (src/components/LeadModal.js):
+- Create a modal that pops up when clicking a lead.
+- Show lead contact info and a list of previous notes.
+- Form to "Add a new follow-up note".
+
+## PHASE 4: TESTING & FINAL POLISH
+
+4.1 API Testing:
+- Use Postman to test lead submission (Public).
+- Use Postman to test Admin Login and Lead Updates (Private).
+
+4.2 UI/UX Polish:
+- Add "Success" and "Error" toasts/notifications.
+- Add simple cards for "Total Leads" and "Conversion Rate %".
+
+4.3 Documentation (README.md):
+- Write clear steps on how to:
+1. Run the SQL script.
+2. Set up the .env file.
+3. Run 'npm install' and 'npm start' for both folders.

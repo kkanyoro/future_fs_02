@@ -1,0 +1,138 @@
+/* Main Background */
+.login-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f8fafc;
+    /* Very light neutral gray */
+    margin: 0;
+    font-family: 'Inter', -apple-system, sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+/* The Cyan Glow Effect */
+.login-page-container::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(34, 211, 238, 0.5) 0%, rgba(34, 211, 238, 0.02) 60%);
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* Login Card - Solid White */
+.login-card {
+    position: relative;
+    z-index: 1;
+    /* Sits above the glow */
+    background: #ffffff;
+    padding: 3rem;
+    width: 100%;
+    max-width: 420px;
+    border-radius: 24px;
+    /* Soft, rounded corners */
+
+    /* Subtle border with soft shadow */
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow:
+        0 20px 25px -5px rgba(0, 0, 0, 0.05),
+        0 10px 10px -5px rgba(0, 0, 0, 0.02);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.login-title {
+    color: #0f172a;
+    /* Deep Navy */
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin-bottom: 0.5rem;
+}
+
+.login-subtitle {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Form Styling */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 0 1.25rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* The input itself gets a subtle cyan glow when active */
+.input-group:focus-within {
+    border-color: #22d3ee;
+    box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.1);
+}
+
+.input-icon {
+    color: #94a3b8;
+    margin-right: 1rem;
+}
+
+.login-input {
+    border: none;
+    background: transparent;
+    padding: 1.1rem 0;
+    width: 100%;
+    outline: none;
+    color: #1e293b;
+    font-size: 1rem;
+}
+
+/* The "Anti-Generic" Navy Button */
+.login-button {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 1.1rem;
+    border: none;
+    border-radius: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.login-button:hover {
+    background: #1e293b;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+.error-message {
+    background: #fff1f2;
+    color: #be123c;
+    padding: 1rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    border: 1px solid #ffe4e6;
+}

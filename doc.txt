@@ -1,0 +1,103 @@
+PROJECT DOCUMENTATION: CLIENT LEAD MANAGEMENT SYSTEM (MINI CRM)
+
+1. PROBLEM STATEMENT
+Many small businesses and freelancers lose potential clients because incoming leads from website contact forms are buried in email inboxes or scattered across various spreadsheets. This makes it difficult to track which leads have been contacted, follow up timely, or analyze conversion rates.
+
+The Mini CRM solves this by providing a centralized dashboard to capture, track, and manage leads, ensuring no potential client falls through the cracks and helping businesses convert inquiries into revenue.
+
+2. DATABASE DESIGN (MySQL)
+
+Table 1: admins
+
+* Purpose: Secure access for business owners to manage leads.
+* Columns:
+* id (INT, Primary Key, Auto Increment)
+* username (VARCHAR)
+* email (VARCHAR, Unique)
+* password_hash (VARCHAR)
+* created_at (TIMESTAMP)
+
+
+
+Table 2: leads
+
+* Purpose: Stores information gathered from the website contact form.
+* Columns:
+* id (INT, Primary Key, Auto Increment)
+* name (VARCHAR)
+* email (VARCHAR)
+* phone (VARCHAR)
+* source (VARCHAR) -- e.g., 'Website', 'Referral'
+* status (ENUM: 'new', 'contacted', 'converted')
+* created_at (TIMESTAMP)
+
+
+
+Table 3: notes
+
+* Purpose: Tracks follow-up history for specific leads.
+* Columns:
+* id (INT, Primary Key, Auto Increment)
+* lead_id (INT, Foreign Key referencing leads.id)
+* content (TEXT)
+* admin_id (INT, Foreign Key referencing admins.id)
+* created_at (TIMESTAMP)
+
+
+
+3. BACKEND CORE (Node.js/Express API)
+
+* Database Connection:
+* File: config/db.js
+* Purpose: Connects to MySQL using mysql2 or Sequelize.
+
+
+* Authentication Module:
+* Login API: Receives credentials -> Verifies password_hash -> Returns JWT Token.
+* Middleware: Verifies JWT for protected routes (Dashboard/Updates).
+
+
+* Lead Capture API:
+* Public Endpoint: POST /api/public/leads
+* Purpose: Receives JSON from external website form and inserts into 'leads' table.
+
+
+
+4. ADMIN FEATURES (Backend & Frontend)
+
+* Lead Management API:
+* GET /api/admin/leads: Fetches all leads (supports filtering by status).
+* PATCH /api/admin/leads/:id: Updates lead status (New -> Contacted -> Converted).
+
+
+* Follow-up System:
+* POST /api/admin/leads/:id/notes: Adds a timestamped note to a lead.
+* GET /api/admin/leads/:id/notes: Retrieves follow-up history for a specific lead.
+
+
+* Admin Dashboard (Frontend):
+* React-based table displaying all leads.
+* Status toggle buttons (mark as contacted/converted).
+* Analytics cards (Total Leads, Conversion Rate).
+
+
+
+5. FILE STRUCTURE
+
+Backend (Node.js/Express)      Frontend (React.js)
+
+---
+
+server.js                      src/App.js (Router)
+config/db.js                   src/services/api.js
+models/Lead.js                 src/pages/Login.js
+models/Note.js                 src/pages/Dashboard.js
+routes/auth.js                 src/components/LeadTable.js
+routes/leads.js                src/components/LeadModal.js
+middleware/auth.js             public/index.html
+
+6. REPUTATION/FINAL DELIVERABLE
+
+* Public GitHub Repo.
+* README with setup instructions (npm install, db migration).
+* Functional CRM capturing and tracking real lead data.
